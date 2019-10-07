@@ -1,34 +1,76 @@
 package com.example.urlapp;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
+
+import java.net.URLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+    private WebView webview;
+
+    private class MyWebViewClient extends WebViewClient {
+
+        private AppCompatActivity context;
+
+        public MyWebViewClient(AppCompatActivity sup_context) {
+            this.context = sup_context;
+        }
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if ("urlab.be".equals(Uri.parse(url).getHost())) {
+                // This is my website, so do not override; let my WebView load the page
+                return false;
+            }
+            // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(intent);
+            return true;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+            StrictMode.setThreadPolicy(policy);
+
+            super.onCreate(savedInstanceState);
+            String url = "https://urlab.be";
+
+            setContentView(R.layout.activity_main);
+
+            webview = findViewById(R.id.myWebView);
+            webview.setWebViewClient(new MyWebViewClient(this));
+            webview.getSettings().setJavaScriptEnabled(true);
+            webview.loadUrl(url);
+        }
+        catch (Exception e) {
+            Log.e("Bardouf", e.toString());
+        }
     }
 
     @Override
@@ -51,5 +93,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public JSONObject getAPI() throws Exception {
+        URL urlab = new URL("https://urlab.be/spaceapi.json");
+        URLConnection ustream = urlab.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(ustream.getInputStream()));
+
+        String inputLine;
+        String response = "";
+
+        while ((inputLine = in.readLine()) != null)
+            response += inputLine;
+        in.close();
+        return new JSONObject(response);
+    }
+
+    public boolean isOpen() throws Exception {
+        JSONObject json = getAPI();
+        return json.getJSONObject("state").getBoolean("open");
     }
 }

@@ -12,8 +12,8 @@ An app to access [Urlab's website](https://urlab.be/) from android, and manage a
 
 Created using [Android Studio](https://developer.android.com/studio)
 
-## TODO
+## TODOZ
 
 * notifications on opening
 * notifications on events
-* render website within the app (then maybe make it use its own layout)
+* interface irc ?
