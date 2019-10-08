@@ -1,29 +1,21 @@
 package com.example.urlapp;
 
-import android.app.Dialog;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.View;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
-import java.net.URLConnection;
-import java.net.URL;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private WebView webview;
@@ -57,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
             StrictMode.setThreadPolicy(policy);
+
+            NotificationService.register(this);
 
             super.onCreate(savedInstanceState);
             String url = "https://urlab.be";
@@ -95,22 +89,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public JSONObject getAPI() throws Exception {
-        URL urlab = new URL("https://urlab.be/spaceapi.json");
-        URLConnection ustream = urlab.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(ustream.getInputStream()));
-
-        String inputLine;
-        String response = "";
-
-        while ((inputLine = in.readLine()) != null)
-            response += inputLine;
-        in.close();
-        return new JSONObject(response);
-    }
-
-    public boolean isOpen() throws Exception {
-        JSONObject json = getAPI();
-        return json.getJSONObject("state").getBoolean("open");
-    }
 }
