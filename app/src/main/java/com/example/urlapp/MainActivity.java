@@ -21,7 +21,7 @@ import android.webkit.WebViewClient;
 public class MainActivity extends AppCompatActivity {
     private WebView webview;
     private PendingIntent pendingIntent;
-    private static long CHECK_INTERVAL_MS = 10 * 1000;
+    private static long CHECK_INTERVAL_MS = 10 * 60 * 1000;
 
 
     private class MyWebViewClient extends WebViewClient {
