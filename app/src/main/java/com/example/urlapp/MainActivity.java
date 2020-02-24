@@ -2,6 +2,7 @@ package com.example.urlapp;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,9 @@ import android.webkit.WebViewClient;
 
 public class MainActivity extends AppCompatActivity {
     private WebView webview;
+    private PendingIntent pendingIntent;
+    private static long CHECK_INTERVAL_MS = 10 * 1000;
+
 
     private class MyWebViewClient extends WebViewClient {
 
@@ -45,12 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
             StrictMode.setThreadPolicy(policy);
-
-            NotificationService.register(this);
 
             super.onCreate(savedInstanceState);
             String url = "https://urlab.be";
@@ -65,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception e) {
             Log.e("Bardouf", e.toString());
         }
+
+        Intent alarmIntent = new Intent(MainActivity.this, Alarm.class);
+        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), CHECK_INTERVAL_MS, pendingIntent);
     }
 
     @Override
@@ -88,5 +96,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

@@ -2,5 +2,6 @@
     <string name="app_name">UrLapp</string>
     <string name="action_settings">Settings</string>
     <string name="channel_name">urlapp_channel</string>
-    <string name="channel_description">A channel for urlapp</string>
+    <string name="channel_description">A notification channel for UrLapp</string>
+    <string name="channel_id">URLAPP_CHANNEL</string>
 </resources>

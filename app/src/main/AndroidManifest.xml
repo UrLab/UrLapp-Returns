@@ -18,12 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="false"
-            android:isolatedProcess="true"
-            android:name=".NotificationService">
-        </service>
+        <receiver android:name=".Alarm" />
     </application>
 </manifest>
