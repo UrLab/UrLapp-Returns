@@ -22,7 +22,6 @@ public class Alarm extends BroadcastReceiver
         boolean open = isOpen();
         String channel_id = context.getString(R.string.channel_id);
         if (open) {
-            Log.d("BITEBITE", "BITEBITEBITEBITE");
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channel_id)
                     .setSmallIcon(R.drawable.urlab_logo)
                     .setContentTitle("News from UrLab")
@@ -32,9 +31,6 @@ public class Alarm extends BroadcastReceiver
                     .setAutoCancel(true);
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(123456, builder.build());
-        }
-        else {
-            Log.d("BITEBITE", "Mais pas pareil");
         }
     }
 
