@@ -24,7 +24,7 @@ import android.webkit.WebViewClient;
 public class MainActivity extends AppCompatActivity {
     private WebView webview;
     private PendingIntent pendingIntent;
-    private static long CHECK_INTERVAL_MS = 10 * 60 * 1000;
+    private static long CHECK_INTERVAL_MS = 1* 60 * 1000;
 
 
     private class MyWebViewClient extends WebViewClient {
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("URLAP_CHANNEL", name, importance);
+            NotificationChannel channel = new NotificationChannel("URLAPP_CHANNEL", name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this

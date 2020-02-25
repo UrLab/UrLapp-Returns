@@ -23,7 +23,7 @@ public class Alarm extends BroadcastReceiver
         if (open) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channel_id)
                     .setSmallIcon(R.drawable.urlab_logo)
-                    .setContentTitle("News from UrLab")
+                    .setContentTitle("UrLapp")
                     .setWhen(System.currentTimeMillis())
                     .setContentText("UrLab is now open!")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
